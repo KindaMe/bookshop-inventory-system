@@ -7,31 +7,39 @@ int main()
 	switch (menu())
 	{
 	case 1:
-		std::cout << "Add new book";
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
 		break;
 	case 2:
-		std::cout << "Add existing book";
+		std::cout << "ADD EXISTING BOOK\n";
+		std::cout << "******************\n";
 		break;
 	case 3:
-		std::cout << "Delete book";
+		std::cout << "DELETE BOOK\n";
+		std::cout << "************\n";
 		break;
 	}
+
+	system("pause>0");
 }
 
 int menu()
 {
-	std::cout << "**************************\n";
-	std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
-	std::cout << "**************************\n";
 	int mode;
-	std::cout << "Menu: \n\n";
-	std::cout << "1 - Add new book\n";
-	std::cout << "2 - Add existing book\n";
-	std::cout << "3 - Delete book\n\n";
+	do
+	{
+		std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
+		std::cout << "**************************\n";
 
-	std::cin >> mode;
+		std::cout << "MENU: \n\n";
+		std::cout << "1 - ADD NEW BOOK\n";
+		std::cout << "2 - ADD EXISTING BOOK\n";
+		std::cout << "3 - DELETE BOOK\n\n";
 
-	system("cls");
+		std::cin >> mode;
+
+		system("cls");
+	} while (mode < 1 || mode > 3);
 
 	return mode;
 }
