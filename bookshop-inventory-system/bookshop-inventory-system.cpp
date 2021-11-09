@@ -3,7 +3,6 @@
 #include <vector>
 
 int menu();
-void addBook();
 
 class book {
 public:
@@ -13,19 +12,122 @@ public:
 	int Amount;
 	float Price;
 
-	book(int id, std::string title, std::string author, int amount, float price)
+	void addBook()
 	{
-		ID = id;
-		Title = title;
-		Author = author;
-		Amount = amount;
-		Price = price;
+		char yn;
+		do
+		{
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+			std::cout << "ID: ";
+
+			while (!(std::cin >> ID) || ID <= 0)
+			{
+				system("cls");
+				std::cout << "ADD NEW BOOK\n";
+				std::cout << "*************\n";
+				std::cout << "Invalid ID.\n";
+				std::cout << "ID: ";
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+			std::cin.ignore(1000, '\n');
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+			std::cout << "Title: ";
+			getline(std::cin, Title);
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+			std::cout << "Author: ";
+			getline(std::cin, Author);
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+			std::cout << "Amount: ";
+			while (!(std::cin >> Amount) || Amount <= 0)
+			{
+				system("cls");
+				std::cout << "ADD NEW BOOK\n";
+				std::cout << "*************\n";
+				std::cout << "Invalid Amount.\n";
+				std::cout << "Amount: ";
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+			std::cin.ignore(1000, '\n');
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+			std::cout << "Price: ";
+			while (!(std::cin >> Price) || Price <= 0)
+			{
+				system("cls");
+				std::cout << "ADD NEW BOOK\n";
+				std::cout << "*************\n";
+				std::cout << "Invalid Price.\n";
+				std::cout << "Price: ";
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+			std::cin.ignore(1000, '\n');
+			system("cls");
+
+			do
+			{
+				system("cls");
+
+				std::cout << "ADD NEW BOOK\n";
+				std::cout << "*************\n";
+
+				std::cout << "You entered: \n\n";
+				std::cout << "ID: " << ID << "\n";
+				std::cout << "Title: " << Title << "\n";
+				std::cout << "Author: " << Author << "\n";
+				std::cout << "Amount: " << Amount << "\n";
+				std::cout << "Price: " << Price << "\n";
+
+				std::cout << "\nCorrect? (y/n): ";
+				std::cin >> yn;
+				yn = tolower(yn);
+
+				switch (yn)
+				{
+				case 'y':
+					std::cout << "\nBook added successfully.\nPress ENTER to continue...";
+					std::cin.get();
+					std::cin.clear();
+					std::cin.ignore();
+					break;
+
+				case 'n':
+					std::cout << "\nPress ENTER to try again...\n";
+					std::cin.get();
+					std::cin.clear();
+					std::cin.ignore();
+					break;
+				default:
+					std::cout << "\nInvalid input.\nPress ENTER to try again...\n";
+					std::cin.get();
+					std::cin.clear();
+					std::cin.ignore();
+					break;
+				}
+			} while (yn != 'y' && yn != 'n');
+		} while (yn == 'n');
 	}
 };
 
 int main()
 {
-	std::vector<book> storage;
+	book tempBook; //JUST FOR NOW
 
 	do
 	{
@@ -34,7 +136,7 @@ int main()
 		switch (menu())
 		{
 		case 1:
-			addBook();
+			tempBook.addBook();
 			break;
 		case 2:
 			//debug
@@ -93,124 +195,4 @@ int menu()
 	}
 
 	return mode;
-}
-
-void addBook()
-{
-	char yn;
-
-	int localID;
-	std::string localTitle;
-	std::string localAuthor;
-	int localAmount;
-	float localPrice;
-
-	do
-	{
-		system("cls");
-
-		std::cout << "ADD NEW BOOK\n";
-		std::cout << "*************\n";
-		std::cout << "ID: ";
-
-		while (!(std::cin >> localID) || localID <= 0)
-		{
-			system("cls");
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
-			std::cout << "Invalid ID.\n";
-			std::cout << "ID: ";
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		}
-		std::cin.ignore(1000, '\n');
-		system("cls");
-
-		std::cout << "ADD NEW BOOK\n";
-		std::cout << "*************\n";
-		std::cout << "Title: ";
-		getline(std::cin, localTitle);
-		system("cls");
-
-		std::cout << "ADD NEW BOOK\n";
-		std::cout << "*************\n";
-		std::cout << "Author: ";
-		getline(std::cin, localAuthor);
-		system("cls");
-
-		std::cout << "ADD NEW BOOK\n";
-		std::cout << "*************\n";
-		std::cout << "Amount: ";
-		while (!(std::cin >> localAmount) || localAmount <= 0)
-		{
-			system("cls");
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
-			std::cout << "Invalid Amount.\n";
-			std::cout << "Amount: ";
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		}
-		std::cin.ignore(1000, '\n');
-		system("cls");
-
-		std::cout << "ADD NEW BOOK\n";
-		std::cout << "*************\n";
-		std::cout << "Price: ";
-		while (!(std::cin >> localPrice) || localPrice <= 0)
-		{
-			system("cls");
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
-			std::cout << "Invalid Price.\n";
-			std::cout << "Price: ";
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		}
-		std::cin.ignore(1000, '\n');
-		system("cls");
-
-		book tempBook(localID, localTitle, localAuthor, localAmount, localPrice);
-		do
-		{
-			system("cls");
-
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
-
-			std::cout << "You entered: \n\n";
-			std::cout << "ID: " << tempBook.ID << "\n";
-			std::cout << "Title: " << tempBook.Title << "\n";
-			std::cout << "Author: " << tempBook.Author << "\n";
-			std::cout << "Amount: " << tempBook.Amount << "\n";
-			std::cout << "Price: " << tempBook.Price << "\n";
-
-			std::cout << "\nCorrect? (y/n): ";
-			std::cin >> yn;
-			yn = tolower(yn);
-
-			switch (yn)
-			{
-			case 'y':
-				std::cout << "\nBook added successfully.\nPress ENTER to continue...";
-				std::cin.get();
-				std::cin.clear();
-				std::cin.ignore();
-				break;
-
-			case 'n':
-				std::cout << "\nPress ENTER to try again...\n";
-				std::cin.get();
-				std::cin.clear();
-				std::cin.ignore();
-				break;
-			default:
-				std::cout << "\nInvalid input.\nPress ENTER to try again...\n";
-				std::cin.get();
-				std::cin.clear();
-				std::cin.ignore();
-				break;
-			}
-		} while (yn != 'y' && yn != 'n');
-	} while (yn == 'n');
 }
