@@ -1,8 +1,10 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 int menu();
+void addBook();
 
 class book {
 public:
@@ -21,123 +23,75 @@ public:
 		std::cout << "Amount: " << Amount << "\n";
 		std::cout << "Price: " << Price << "\n";
 	}
-	void addBook()
+	void initBook()
 	{
-		char yn;
-		do
+		system("cls");
+
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
+		std::cout << "ID: ";
+
+		while (!(std::cin >> ID) || ID <= 0)
 		{
 			system("cls");
-
 			std::cout << "ADD NEW BOOK\n";
 			std::cout << "*************\n";
+			std::cout << "Invalid ID.\n";
 			std::cout << "ID: ";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		std::cin.ignore(1000, '\n');
+		system("cls");
 
-			while (!(std::cin >> ID) || ID <= 0)
-			{
-				system("cls");
-				std::cout << "ADD NEW BOOK\n";
-				std::cout << "*************\n";
-				std::cout << "Invalid ID.\n";
-				std::cout << "ID: ";
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			}
-			std::cin.ignore(1000, '\n');
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
+		std::cout << "Title: ";
+		getline(std::cin, Title);
+		system("cls");
+
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
+		std::cout << "Author: ";
+		getline(std::cin, Author);
+		system("cls");
+
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
+		std::cout << "Amount: ";
+		while (!(std::cin >> Amount) || Amount <= 0)
+		{
 			system("cls");
-
 			std::cout << "ADD NEW BOOK\n";
 			std::cout << "*************\n";
-			std::cout << "Title: ";
-			getline(std::cin, Title);
-			system("cls");
-
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
-			std::cout << "Author: ";
-			getline(std::cin, Author);
-			system("cls");
-
-			std::cout << "ADD NEW BOOK\n";
-			std::cout << "*************\n";
+			std::cout << "Invalid Amount.\n";
 			std::cout << "Amount: ";
-			while (!(std::cin >> Amount) || Amount <= 0)
-			{
-				system("cls");
-				std::cout << "ADD NEW BOOK\n";
-				std::cout << "*************\n";
-				std::cout << "Invalid Amount.\n";
-				std::cout << "Amount: ";
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			}
-			std::cin.ignore(1000, '\n');
-			system("cls");
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		std::cin.ignore(1000, '\n');
+		system("cls");
 
+		std::cout << "ADD NEW BOOK\n";
+		std::cout << "*************\n";
+		std::cout << "Price: ";
+		while (!(std::cin >> Price) || Price <= 0)
+		{
+			system("cls");
 			std::cout << "ADD NEW BOOK\n";
 			std::cout << "*************\n";
+			std::cout << "Invalid Price.\n";
 			std::cout << "Price: ";
-			while (!(std::cin >> Price) || Price <= 0)
-			{
-				system("cls");
-				std::cout << "ADD NEW BOOK\n";
-				std::cout << "*************\n";
-				std::cout << "Invalid Price.\n";
-				std::cout << "Price: ";
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			}
-			std::cin.ignore(1000, '\n');
-			system("cls");
-
-			do
-			{
-				system("cls");
-
-				std::cout << "ADD NEW BOOK\n";
-				std::cout << "*************\n";
-
-				std::cout << "You entered: \n\n";
-				std::cout << "ID: " << ID << "\n";
-				std::cout << "Title: " << Title << "\n";
-				std::cout << "Author: " << Author << "\n";
-				std::cout << "Amount: " << Amount << "\n";
-				std::cout << "Price: " << Price << "\n";
-
-				std::cout << "\nCorrect? (y/n): ";
-				std::cin >> yn;
-				yn = tolower(yn);
-
-				switch (yn)
-				{
-				case 'y':
-					std::cout << "\nBook added successfully.\nPress ENTER to continue...";
-					std::cin.get();
-					std::cin.clear();
-					std::cin.ignore();
-					break;
-
-				case 'n':
-					std::cout << "\nPress ENTER to try again...\n";
-					std::cin.get();
-					std::cin.clear();
-					std::cin.ignore();
-					break;
-				default:
-					std::cout << "\nInvalid input.\nPress ENTER to try again...\n";
-					std::cin.get();
-					std::cin.clear();
-					std::cin.ignore();
-					break;
-				}
-			} while (yn != 'y' && yn != 'n');
-		} while (yn == 'n');
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		std::cin.ignore(1000, '\n');
+		system("cls");
 	}
 };
 
 int main()
 {
-	book tempBook; //JUST FOR NOW
-
 	do
 	{
 		system("cls");
@@ -145,7 +99,7 @@ int main()
 		switch (menu())
 		{
 		case 1:
-			tempBook.addBook();
+			addBook();
 			break;
 		case 2:
 			//debug
@@ -204,4 +158,66 @@ int menu()
 	}
 
 	return mode;
+}
+
+void addBook()
+{
+	std::fstream file;
+	book tempBook;
+	char yn;
+	do
+	{
+		tempBook.initBook();
+
+		do
+		{
+			system("cls");
+
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+
+			std::cout << "You entered: \n\n";
+			std::cout << "ID: " << tempBook.ID << "\n";
+			std::cout << "Title: " << tempBook.Title << "\n";
+			std::cout << "Author: " << tempBook.Author << "\n";
+			std::cout << "Amount: " << tempBook.Amount << "\n";
+			std::cout << "Price: " << tempBook.Price << "\n";
+
+			std::cout << "\nCorrect? (y/n): ";
+			std::cin >> yn;
+			yn = tolower(yn);
+
+			switch (yn)
+			{
+			case 'y':
+				file.open("book_storage.txt", std::ios::app);
+				if (file.is_open())
+				{
+					file.write((char*)&tempBook, sizeof(tempBook));
+					file.close();
+					std::cout << "\nBook added successfully.\nPress ENTER to continue...";
+				}
+				else
+				{
+					std::cout << "\nFailed to open a file.\nPress ENTER to continue...";
+				}
+				std::cin.get();
+				std::cin.clear();
+				std::cin.ignore();
+				break;
+			case 'n':
+				std::cout << "\nPress ENTER to try again...\n";
+				std::cin.get();
+				std::cin.clear();
+				std::cin.ignore();
+				break;
+			default:
+				std::cout << "\nInvalid input.\nPress ENTER to try again...\n";
+				std::cin.get();
+				std::cin.clear();
+				std::cin.ignore();
+				break;
+			}
+		} while (yn != 'y' && yn != 'n');
+	} while (yn == 'n');
 }
