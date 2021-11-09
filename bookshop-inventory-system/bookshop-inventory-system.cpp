@@ -6,12 +6,21 @@ int menu();
 
 class book {
 public:
-	int ID;
+	int ID = 0;
 	std::string Title;
 	std::string Author;
-	int Amount;
-	float Price;
+	int Amount = 1;
+	float Price = 0;
 
+	void printBookDebug()
+	{
+		std::cout << "\n";
+		std::cout << "ID: " << ID << "\n";
+		std::cout << "Title: " << Title << "\n";
+		std::cout << "Author: " << Author << "\n";
+		std::cout << "Amount: " << Amount << "\n";
+		std::cout << "Price: " << Price << "\n";
+	}
 	void addBook()
 	{
 		char yn;
