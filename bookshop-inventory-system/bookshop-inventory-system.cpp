@@ -29,18 +29,44 @@ int main()
 
 	do
 	{
+		system("cls");
+
 		switch (menu())
 		{
 		case 1:
 			addBook();
 			break;
 		case 2:
+			//debug
+			system("cls");
 			std::cout << "ADD EXISTING BOOK\n";
 			std::cout << "******************\n";
+			std::cin.clear();
+			std::cin.ignore();
+			std::cin.get();
 			break;
+			//
 		case 3:
+			//debug
+			system("cls");
 			std::cout << "DELETE BOOK\n";
 			std::cout << "************\n";
+			std::cin.clear();
+			std::cin.ignore();
+			std::cin.get();
+			break;
+			//
+		case 4:
+			system("cls");
+			std::cout << "BROWSE STORAGE\n";
+			std::cout << "***************\n";
+			std::cin.clear();
+			std::cin.ignore();
+			std::cin.get();
+			break;
+		case -1:
+			std::cout << "\nInvalid input.\nPress ENTER to try again...";
+			std::cin.get();
 			break;
 		}
 	} while (true);
@@ -49,20 +75,22 @@ int main()
 int menu()
 {
 	int mode;
-	do
+
+	std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
+	std::cout << "**************************\n";
+
+	std::cout << "MENU: \n\n";
+	std::cout << "1 - ADD NEW BOOK\n";
+	std::cout << "2 - ADD EXISTING BOOK\n";
+	std::cout << "3 - DELETE BOOK\n";
+	std::cout << "4 - BROWSE STORAGE\n\n";
+
+	while (!(std::cin >> mode) || (mode < 1 || mode > 4))
 	{
-		std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
-		std::cout << "**************************\n";
-
-		std::cout << "MENU: \n\n";
-		std::cout << "1 - ADD NEW BOOK\n";
-		std::cout << "2 - ADD EXISTING BOOK\n";
-		std::cout << "3 - DELETE BOOK\n\n";
-
-		std::cin >> mode;
-
-		//system("cls");
-	} while (mode < 1 || mode > 3);
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return -1;
+	}
 
 	return mode;
 }
@@ -185,5 +213,4 @@ void addBook()
 			}
 		} while (yn != 'y' && yn != 'n');
 	} while (yn == 'n');
-	system("cls");
 }
