@@ -5,6 +5,7 @@
 
 int menu();
 void addBook();
+void browseStorage();
 
 class book {
 public:
@@ -125,6 +126,7 @@ int main()
 			system("cls");
 			std::cout << "BROWSE STORAGE\n";
 			std::cout << "***************\n";
+			browseStorage();
 			std::cin.clear();
 			std::cin.ignore();
 			std::cin.get();
@@ -220,4 +222,34 @@ void addBook()
 			}
 		} while (yn != 'y' && yn != 'n');
 	} while (yn == 'n');
+}
+
+void browseStorage()
+{
+	std::fstream file;
+	book tempBook;
+
+	file.open("book_storage.txt", std::ios::in);
+	if (file.is_open())
+	{
+		while (true)
+		{
+			file.read((char*)&tempBook, sizeof(tempBook));
+			if (file.eof())
+			{
+				break;
+			}
+			else
+			{
+				tempBook.printBookDebug();
+			}
+		}
+
+		file.close();
+		std::cout << "\nPress ENTER to continue...";
+	}
+	else
+	{
+		std::cout << "\nFailed to open a file.\nPress ENTER to continue...";
+	}
 }
