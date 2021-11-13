@@ -3,26 +3,25 @@
 #include <vector>
 #include <fstream>
 
-int menu();
-void addBook();
-void browseStorage();
-
 class book {
-public:
+private:
 	int ID = 0;
 	std::string Title;
 	std::string Author;
 	int Amount = 1;
 	float Price = 0;
-
+public:
 	void printBookDebug()
 	{
 		std::cout << "\n";
-		std::cout << "ID: " << ID << "\n";
-		std::cout << "Title: " << Title << "\n";
-		std::cout << "Author: " << Author << "\n";
-		std::cout << "Amount: " << Amount << "\n";
-		std::cout << "Price: " << Price << "\n";
+		std::cout
+			<< "| "
+			<< "ID: " << ID << " | "
+			<< "Title: " << Title << " | "
+			<< "Author: " << Author << " | "
+			<< "Amount: " << Amount << " | "
+			<< "Price: " << Price << " |"
+			<< "\n";
 	}
 	void initBook()
 	{
@@ -91,8 +90,14 @@ public:
 	}
 };
 
+int menu();
+void addBook(std::vector<book>* storage);
+void browseStorage(std::vector<book>* storage);
+
 int main()
 {
+	std::vector<book>storage;
+
 	do
 	{
 		system("cls");
@@ -100,10 +105,9 @@ int main()
 		switch (menu())
 		{
 		case 1:
-			addBook();
+			addBook(&storage);
 			break;
 		case 2:
-			//debug
 			system("cls");
 			std::cout << "ADD EXISTING BOOK\n";
 			std::cout << "******************\n";
@@ -111,9 +115,7 @@ int main()
 			std::cin.ignore();
 			std::cin.get();
 			break;
-			//
 		case 3:
-			//debug
 			system("cls");
 			std::cout << "DELETE BOOK\n";
 			std::cout << "************\n";
@@ -121,12 +123,11 @@ int main()
 			std::cin.ignore();
 			std::cin.get();
 			break;
-			//
 		case 4:
 			system("cls");
 			std::cout << "BROWSE STORAGE\n";
 			std::cout << "***************\n";
-			browseStorage();
+			browseStorage(&storage);
 			std::cin.clear();
 			std::cin.ignore();
 			std::cin.get();
@@ -162,9 +163,8 @@ int menu()
 	return mode;
 }
 
-void addBook()
+void addBook(std::vector<book>* storage)
 {
-	std::fstream file;
 	book tempBook;
 	char yn;
 	do
@@ -178,12 +178,8 @@ void addBook()
 			std::cout << "ADD NEW BOOK\n";
 			std::cout << "*************\n";
 
-			std::cout << "You entered: \n\n";
-			std::cout << "ID: " << tempBook.ID << "\n";
-			std::cout << "Title: " << tempBook.Title << "\n";
-			std::cout << "Author: " << tempBook.Author << "\n";
-			std::cout << "Amount: " << tempBook.Amount << "\n";
-			std::cout << "Price: " << tempBook.Price << "\n";
+			std::cout << "You entered: \n";
+			tempBook.printBookDebug();
 
 			std::cout << "\nCorrect? (y/n): ";
 			std::cin >> yn;
@@ -192,17 +188,8 @@ void addBook()
 			switch (yn)
 			{
 			case 'y':
-				file.open("book_storage.txt", std::ios::app);
-				if (file.is_open())
-				{
-					file.write((char*)&tempBook, sizeof(tempBook));
-					file.close();
-					std::cout << "\nBook added successfully.\nPress ENTER to continue...";
-				}
-				else
-				{
-					std::cout << "\nFailed to open a file.\nPress ENTER to continue...";
-				}
+				storage->push_back(tempBook);
+				std::cout << "\nBook added successfully.\nPress ENTER to continue...";
 				std::cin.get();
 				std::cin.clear();
 				std::cin.ignore();
@@ -224,32 +211,12 @@ void addBook()
 	} while (yn == 'n');
 }
 
-void browseStorage()
+void browseStorage(std::vector<book>* storage)
 {
-	std::fstream file;
-	book tempBook;
-
-	file.open("book_storage.txt", std::ios::in);
-	if (file.is_open())
+	for (int i = 0; i < storage->size(); i++)
 	{
-		while (true)
-		{
-			file.read((char*)&tempBook, sizeof(tempBook));
-			if (file.eof())
-			{
-				break;
-			}
-			else
-			{
-				tempBook.printBookDebug();
-			}
-		}
+		(*storage)[i].printBookDebug();
+	}
 
-		file.close();
-		std::cout << "\nPress ENTER to continue...";
-	}
-	else
-	{
-		std::cout << "\nFailed to open a file.\nPress ENTER to continue...";
-	}
+	std::cout << "\nPress ENTER to continue...";
 }
