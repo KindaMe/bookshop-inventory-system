@@ -4,6 +4,10 @@
 #include <fstream>
 #include <iomanip>
 
+const char separator = ' ';
+const int nameWidth = 40;
+const int numWidth = 10;
+
 class book {
 private:
 	int ID = 0;
@@ -12,7 +16,7 @@ private:
 	int Amount = 1;
 	float Price = 0;
 public:
-	void printBookDebug(char separator, int nameWidth, int numWidth)
+	void printBookDebug()
 	{
 		std::cout << "\n";
 		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << ID;
@@ -116,8 +120,10 @@ public:
 
 int menu();
 void addBook(std::vector<book>* storage);
-void browseStorage(std::vector<book>* storage);
+void browseStorage(std::vector<book> storage);
 void deleteBook(std::vector<book>* storage);
+void modifyBook(std::vector<book>* storage);
+bool isStorageEmpty(std::vector<book> storage);
 
 int main()
 {
@@ -145,23 +151,30 @@ int main()
 			break;
 		case 2:
 			system("cls");
-			std::cout << "ADD EXISTING BOOK\n";
-			std::cout << "******************\n";
-			std::cin.clear();
-			std::cin.ignore();
-			std::cin.get();
+			std::cout << "MODIFY EXISTING BOOK\n";
+			std::cout << "*********************\n";
+			if (!(isStorageEmpty(storage)))
+			{
+				modifyBook(&storage);
+			}
 			break;
 		case 3:
 			system("cls");
 			std::cout << "DELETE BOOK\n";
 			std::cout << "************\n";
-			deleteBook(&storage);
+			if (!(isStorageEmpty(storage)))
+			{
+				deleteBook(&storage);
+			}
 			break;
 		case 4:
 			system("cls");
 			std::cout << "BROWSE STORAGE\n";
 			std::cout << "***************\n";
-			browseStorage(&storage);
+			if (!(isStorageEmpty(storage)))
+			{
+				browseStorage(storage);
+			}
 			break;
 		default:
 			system("cls");
@@ -183,7 +196,7 @@ int menu()
 
 	std::cout << "MENU: \n\n";
 	std::cout << "1 - ADD NEW BOOK\n";
-	std::cout << "2 - ADD EXISTING BOOK\n";
+	std::cout << "2 - MODIFY EXISTING BOOK\n";
 	std::cout << "3 - DELETE BOOK\n";
 	std::cout << "4 - BROWSE STORAGE\n\n";
 	std::cout << "0 - EXIT\n\n";
@@ -213,7 +226,16 @@ void addBook(std::vector<book>* storage)
 		std::cout << "*************\n";
 
 		std::cout << "You entered: \n";
-		tempBook.printBookDebug(' ', 40, 10);
+
+		std::cout << "\n";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
+		std::cout << "\n";
+
+		tempBook.printBookDebug();
 
 		std::cout << "\nCorrect? (y/n): ";
 		std::cin >> yn;
@@ -257,33 +279,22 @@ void addBook(std::vector<book>* storage)
 label1: {}
 }
 
-void browseStorage(std::vector<book>* storage)
+void browseStorage(std::vector<book> storage)
 {
-	if (storage->size() > 0)
-	{
-		const char separator = ' ';
-		const int nameWidth = 40;
-		const int numWidth = 10;
+	std::cout << "\n";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
+	std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
+	std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
+	std::cout << "\n";
 
-		std::cout << "\n";
-		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
-		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
-		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
-		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
-		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
-		std::cout << "\n";
-
-		for (int i = 0; i < storage->size(); i++)
-		{
-			(*storage)[i].printBookDebug(separator, nameWidth, numWidth);
-		}
-	}
-	else
+	for (int i = 0; i < storage.size(); i++)
 	{
-		std::cout << "No books available.\n";
+		storage[i].printBookDebug();
 	}
 
-	std::cout << "\nPress ENTER to continue...";
+	std::cout << "\n\nPress ENTER to continue...";
 	std::cin.clear();
 	std::cin.ignore();
 	std::cin.get();
@@ -330,7 +341,16 @@ void deleteBook(std::vector<book>* storage)
 				std::cout << "************\n";
 
 				std::cout << "You are trying to delete: \n";
-				(*storage)[i].printBookDebug(' ', 40, 10);
+				std::cout << "\n";
+				std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
+				std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
+				std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
+				std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
+				std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
+				std::cout << "\n";
+
+				(*storage)[i].printBookDebug();
+
 				std::cout << "\nCorrect? (y/n):";
 				std::cin >> yn;
 				yn = tolower(yn);
@@ -392,5 +412,28 @@ label1: {}
 		std::cin.clear();
 		std::cin.ignore();
 		std::cin.get();
+	}
+}
+
+void modifyBook(std::vector<book>* storage)
+{
+	std::cin.clear();
+	std::cin.ignore();
+	std::cin.get();
+}
+
+bool isStorageEmpty(std::vector<book> storage)
+{
+	if (storage.size() > 0)
+	{
+		return false;
+	}
+	else
+	{
+		std::cout << "No books available.";
+		std::cin.get();
+		std::cin.clear();
+		std::cin.ignore();
+		return true;
 	}
 }
