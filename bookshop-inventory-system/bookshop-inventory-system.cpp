@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 
 class book {
 private:
@@ -11,17 +12,15 @@ private:
 	int Amount = 1;
 	float Price = 0;
 public:
-	void printBookDebug()
+	void printBookDebug(char separator, int nameWidth, int numWidth)
 	{
 		std::cout << "\n";
-		std::cout
-			<< "| "
-			<< "ID: " << ID << " | "
-			<< "Title: " << Title << " | "
-			<< "Author: " << Author << " | "
-			<< "Amount: " << Amount << " | "
-			<< "Price: " << Price << " |"
-			<< "\n";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << ID;
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << Title;
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << Author;
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << Amount;
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << Price;
+		std::cout << "\n";
 	}
 	void initBook(std::vector<book>* storage)
 	{
@@ -130,6 +129,17 @@ int main()
 
 		switch (menu())
 		{
+		case 0:
+			system("cls");
+			std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
+			std::cout << "**************************\n";
+
+			std::cout << "\nSee you soon!";
+
+			system("pause>0");
+			system("cls");
+
+			return 0;
 		case 1:
 			addBook(&storage);
 			break;
@@ -153,8 +163,11 @@ int main()
 			std::cout << "***************\n";
 			browseStorage(&storage);
 			break;
-		case -1:
-			std::cout << "\nInvalid input.\nPress ENTER to try again...";
+		default:
+			system("cls");
+			std::cout << "BOOKSHOP INVENTORY SYSTEM\n";
+			std::cout << "**************************\n";
+			std::cout << "Invalid input.\n\nPress ENTER to try again...";
 			std::cin.get();
 			break;
 		}
@@ -173,8 +186,9 @@ int menu()
 	std::cout << "2 - ADD EXISTING BOOK\n";
 	std::cout << "3 - DELETE BOOK\n";
 	std::cout << "4 - BROWSE STORAGE\n\n";
+	std::cout << "0 - EXIT\n\n";
 
-	while (!(std::cin >> mode) || (mode < 1 || mode > 4))
+	while (!(std::cin >> mode) || (mode < 0 || mode > 4))
 	{
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -199,7 +213,7 @@ void addBook(std::vector<book>* storage)
 		std::cout << "*************\n";
 
 		std::cout << "You entered: \n";
-		tempBook.printBookDebug();
+		tempBook.printBookDebug(' ', 40, 10);
 
 		std::cout << "\nCorrect? (y/n): ";
 		std::cin >> yn;
@@ -208,35 +222,60 @@ void addBook(std::vector<book>* storage)
 		switch (yn)
 		{
 		case 'y':
+			system("cls");
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+
 			storage->push_back(tempBook);
-			std::cout << "\nBook added successfully.\nPress ENTER to continue...";
+			std::cout << "Book added successfully.\n\nPress ENTER to continue...";
 			std::cin.get();
 			std::cin.clear();
 			std::cin.ignore();
-			break;
+			goto label1;
 		case 'n':
+			system("cls");
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+
 			std::cout << "\nPress ENTER to continue...\n";
 			std::cin.get();
 			std::cin.clear();
 			std::cin.ignore();
-			break;
+			goto label1;
 		default:
-			std::cout << "\nInvalid input.\nPress ENTER to try again...\n";
+			system("cls");
+			std::cout << "ADD NEW BOOK\n";
+			std::cout << "*************\n";
+
+			std::cout << "Invalid input.\n\nPress ENTER to try again...\n";
 			std::cin.get();
 			std::cin.clear();
 			std::cin.ignore();
 			break;
 		}
-	} while (yn != 'y' && yn != 'n');
+	} while (true);
+label1: {}
 }
 
 void browseStorage(std::vector<book>* storage)
 {
 	if (storage->size() > 0)
 	{
+		const char separator = ' ';
+		const int nameWidth = 40;
+		const int numWidth = 10;
+
+		std::cout << "\n";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
+		std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
+		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
+		std::cout << "\n";
+
 		for (int i = 0; i < storage->size(); i++)
 		{
-			(*storage)[i].printBookDebug();
+			(*storage)[i].printBookDebug(separator, nameWidth, numWidth);
 		}
 	}
 	else
@@ -256,62 +295,100 @@ void deleteBook(std::vector<book>* storage)
 	char yn;
 	bool broken = false;
 
-	std::cout << "Enter [ID] to delete: ";
-	std::cin >> id;
-
-	for (int i = 0; i < storage->size(); i++)
+	do
 	{
-		if ((*storage)[i].getID() == id)
+		system("cls");
+		std::cout << "DELETE BOOK\n";
+		std::cout << "************\n";
+
+		std::cout << "Enter [ID] to delete: ";
+		if (!(std::cin >> id))
 		{
 			system("cls");
 			std::cout << "DELETE BOOK\n";
 			std::cout << "************\n";
 
-			std::cout << "You are trying to delete: \n";
-			(*storage)[i].printBookDebug();
-			std::cout << "\nCorrect? (y/n):";
-			std::cin >> yn;
-			yn = tolower(yn);
+			std::cout << "Invalid input.\n\nPress ENTER to try again...";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cin.get();
+		}
+		else
+		{
+			break;
+		}
+	} while (true);
 
-			switch (yn)
+	for (int i = 0; i < storage->size(); i++)
+	{
+		if ((*storage)[i].getID() == id)
+		{
+			do
 			{
-			case 'y':
-				(*storage).erase((*storage).begin() + i);
-
 				system("cls");
 				std::cout << "DELETE BOOK\n";
 				std::cout << "************\n";
 
-				std::cout << "ID [" << id << "] deleted.";
-				std::cout << "\n\nPress ENTER to continue...";
-				std::cin.clear();
-				std::cin.ignore();
-				std::cin.get();
-				broken = true;
-				break;
-			case 'n':
-				system("cls");
-				std::cout << "DELETE BOOK\n";
-				std::cout << "************\n";
+				std::cout << "You are trying to delete: \n";
+				(*storage)[i].printBookDebug(' ', 40, 10);
+				std::cout << "\nCorrect? (y/n):";
+				std::cin >> yn;
+				yn = tolower(yn);
 
-				std::cout << "Press ENTER to continue...";
-				std::cin.clear();
-				std::cin.ignore();
-				std::cin.get();
-				broken = true;
-				break;
-			}
+				switch (yn)
+				{
+				case 'y':
+
+					system("cls");
+					std::cout << "DELETE BOOK\n";
+					std::cout << "************\n";
+
+					(*storage).erase((*storage).begin() + i);
+
+					std::cout << "ID [" << id << "] deleted.";
+					std::cout << "\n\nPress ENTER to continue...";
+					std::cin.clear();
+					std::cin.ignore();
+					std::cin.get();
+					broken = true;
+					goto label1;
+				case 'n':
+					system("cls");
+					std::cout << "DELETE BOOK\n";
+					std::cout << "************\n";
+
+					std::cout << "\nPress ENTER to continue...";
+					std::cin.clear();
+					std::cin.ignore();
+					std::cin.get();
+					broken = true;
+					goto label1;
+				default:
+					system("cls");
+					std::cout << "DELETE BOOK\n";
+					std::cout << "************\n";
+
+					std::cout << "Invalid input.\n\nPress ENTER to try again...";
+					std::cin.clear();
+					std::cin.ignore();
+					std::cin.get();
+					broken = true;
+					break;
+				}
+			} while (true);
 			break;
 		}
 	}
+label1: {}
+
 	if (broken == false)
 	{
 		system("cls");
 		std::cout << "DELETE BOOK\n";
 		std::cout << "************\n";
 
-		std::cout << "ID [" << id << "] does not exist.\n\n";
-		std::cout << "Press ENTER to continue...";
+		std::cout << "ID [" << id << "] does not exist.\n";
+		std::cout << "\nPress ENTER to continue...";
 		std::cin.clear();
 		std::cin.ignore();
 		std::cin.get();
