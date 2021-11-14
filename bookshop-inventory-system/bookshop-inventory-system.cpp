@@ -122,6 +122,15 @@ public:
 		std::cin.ignore(1000, '\n');
 		std::cout << "Enter new title: ";
 		getline(std::cin, Title);
+
+		system("cls");
+		std::cout << "MODIFY TITLE\n";
+		std::cout << "*************\n";
+
+		std::cout << "New title: " << Title;
+
+		std::cout << "\n\nPress ENTER to continue...";
+		std::cin.get();
 	}
 	void changeAuthor()
 	{
@@ -132,6 +141,15 @@ public:
 		std::cin.ignore(1000, '\n');
 		std::cout << "Enter new author: ";
 		getline(std::cin, Author);
+
+		system("cls");
+		std::cout << "MODIFY AUTHOR\n";
+		std::cout << "**************\n";
+
+		std::cout << "New author: " << Author;
+
+		std::cout << "\n\nPress ENTER to continue...";
+		std::cin.get();
 	}
 	void changeAmount()
 	{
@@ -172,6 +190,17 @@ public:
 			std::cin.ignore(1000, '\n');
 			std::cin.get();
 		} while (true);
+
+		system("cls");
+		std::cout << "MODIFY AMOUNT\n";
+		std::cout << "**************\n";
+
+		std::cout << "New amount: " << Amount;
+
+		std::cout << "\n\nPress ENTER to continue...";
+		std::cin.clear();
+		std::cin.ignore();
+		std::cin.get();
 	}
 	void changePrice()
 	{
@@ -187,16 +216,16 @@ public:
 			if (!(std::cin >> value))
 			{
 				system("cls");
-				std::cout << "MODIFY AMOUNT\n";
-				std::cout << "**************\n";
+				std::cout << "MODIFY PRICE\n";
+				std::cout << "*************\n";
 
 				std::cout << "Invalid input.";
 			}
 			else if (value <= 0)
 			{
 				system("cls");
-				std::cout << "MODIFY AMOUNT\n";
-				std::cout << "**************\n";
+				std::cout << "MODIFY PRICE\n";
+				std::cout << "*************\n";
 
 				std::cout << "Price must be higher then 0.";
 			}
@@ -210,6 +239,17 @@ public:
 			std::cin.ignore(1000, '\n');
 			std::cin.get();
 		} while (true);
+
+		system("cls");
+		std::cout << "MODIFY PRICE\n";
+		std::cout << "*************\n";
+
+		std::cout << "New price: " << Price;
+
+		std::cout << "\n\nPress ENTER to continue...";
+		std::cin.clear();
+		std::cin.ignore();
+		std::cin.get();
 	}
 };
 
