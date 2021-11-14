@@ -9,13 +9,13 @@ const int nameWidth = 40;
 const int numWidth = 10;
 
 class book {
-private:
+public:
 	int ID = 0;
 	std::string Title;
 	std::string Author;
 	int Amount = 1;
 	float Price = 0;
-public:
+
 	void printBookDebug()
 	{
 		std::cout << "\n";
@@ -111,10 +111,6 @@ public:
 		}
 		std::cin.ignore(1000, '\n');
 		system("cls");
-	}
-	int getID()
-	{
-		return ID;
 	}
 
 	void changeTitle()
@@ -226,9 +222,13 @@ void deleteBook(std::vector<book>* storage);
 void browseStorage(std::vector<book> storage);
 bool isStorageEmpty(std::vector<book> storage);
 
+void readStorage(std::vector<book>* storage);
+void writeStorage(std::vector<book> storage);
+
 int main()
 {
 	std::vector<book>storage;
+	readStorage(&storage);
 
 	do
 	{
@@ -287,6 +287,56 @@ int main()
 			break;
 		}
 	} while (true);
+}
+
+void readStorage(std::vector<book>* storage)
+{
+	std::ifstream file;
+	book tempBook;
+	int counter = 0;
+	std::string line;
+
+	file.open("book_storage.txt");
+	while (getline(file, line))
+	{
+		switch (counter % 5)
+		{
+		case 0:
+			tempBook.ID = stoi(line);
+			break;
+		case 1:
+			tempBook.Title = line;
+			break;
+		case 2:
+			tempBook.Author = line;
+			break;
+		case 3:
+			tempBook.Amount = stoi(line);
+			break;
+		case 4:
+			tempBook.Price = stof(line);
+			storage->push_back(tempBook);
+			break;
+		}
+
+		counter++;
+	}
+
+	file.close();
+}
+
+void writeStorage(std::vector<book> storage)
+{
+	std::ofstream file;
+	file.open("book_storage.txt");
+	for (int i = 0; i < storage.size(); ++i) {
+		file << storage[i].ID << std::endl;
+		file << storage[i].Title << std::endl;
+		file << storage[i].Author << std::endl;
+		file << storage[i].Amount << std::endl;
+		file << storage[i].Price << std::endl;
+	}
+	file.close();
 }
 
 int menu()
@@ -351,6 +401,7 @@ void addBook(std::vector<book>* storage)
 			std::cout << "*************\n";
 
 			storage->push_back(tempBook);
+			writeStorage(*storage);
 			std::cout << "Book added successfully.\n\nPress ENTER to continue...";
 			std::cin.get();
 			std::cin.clear();
@@ -434,7 +485,7 @@ void deleteBook(std::vector<book>* storage)
 
 	for (int i = 0; i < storage->size(); i++)
 	{
-		if ((*storage)[i].getID() == id)
+		if ((*storage)[i].ID == id)
 		{
 			do
 			{
@@ -466,6 +517,7 @@ void deleteBook(std::vector<book>* storage)
 					std::cout << "************\n";
 
 					(*storage).erase((*storage).begin() + i);
+					writeStorage(*storage);
 
 					std::cout << "ID [" << id << "] deleted.";
 					std::cout << "\n\nPress ENTER to continue...";
@@ -590,7 +642,7 @@ void modifyID(std::vector<book>* storage)
 
 		for (int i = 0; i < (*storage).size(); i++)
 		{
-			if ((*storage)[i].getID() == id)
+			if ((*storage)[i].ID == id)
 			{
 				id = i;
 				goto label1;
@@ -634,4 +686,5 @@ label1: {}
 		}
 	} while (true);
 label2: {}
+	writeStorage(*storage);
 }
