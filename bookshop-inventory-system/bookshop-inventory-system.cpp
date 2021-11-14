@@ -116,13 +116,114 @@ public:
 	{
 		return ID;
 	}
+
+	void changeTitle()
+	{
+		system("cls");
+		std::cout << "MODIFY TITLE\n";
+		std::cout << "*************\n";
+
+		std::cin.ignore(1000, '\n');
+		std::cout << "Enter new title: ";
+		getline(std::cin, Title);
+	}
+	void changeAuthor()
+	{
+		system("cls");
+		std::cout << "MODIFY AUTHOR\n";
+		std::cout << "**************\n";
+
+		std::cin.ignore(1000, '\n');
+		std::cout << "Enter new author: ";
+		getline(std::cin, Author);
+	}
+	void changeAmount()
+	{
+		int value;
+
+		do
+		{
+			system("cls");
+			std::cout << "MODIFY AMOUNT\n";
+			std::cout << "**************\n";
+
+			std::cout << "Current amount: " << Amount << "\n";
+			std::cout << "Enter amount to add (+/-): ";
+
+			if (!(std::cin >> value))
+			{
+				system("cls");
+				std::cout << "MODIFY AMOUNT\n";
+				std::cout << "**************\n";
+
+				std::cout << "Invalid input.";
+			}
+			else if ((Amount + value) < 0)
+			{
+				system("cls");
+				std::cout << "MODIFY AMOUNT\n";
+				std::cout << "**************\n";
+
+				std::cout << "Not enough books available.";
+			}
+			else
+			{
+				Amount += value;
+				break;
+			}
+			std::cout << "\n\nPress ENTER to continue...";
+			std::cin.clear();
+			std::cin.ignore(1000, '\n');
+			std::cin.get();
+		} while (true);
+	}
+	void changePrice()
+	{
+		float value;
+		do
+		{
+			system("cls");
+			std::cout << "MODIFY PRICE\n";
+			std::cout << "*************\n";
+
+			std::cout << "Current price: " << Price << "\n";
+			std::cout << "Enter new price: ";
+			if (!(std::cin >> value))
+			{
+				system("cls");
+				std::cout << "MODIFY AMOUNT\n";
+				std::cout << "**************\n";
+
+				std::cout << "Invalid input.";
+			}
+			else if (value <= 0)
+			{
+				system("cls");
+				std::cout << "MODIFY AMOUNT\n";
+				std::cout << "**************\n";
+
+				std::cout << "Price must be higher then 0.";
+			}
+			else
+			{
+				Price = value;
+				break;
+			}
+			std::cout << "\n\nPress ENTER to continue...";
+			std::cin.clear();
+			std::cin.ignore(1000, '\n');
+			std::cin.get();
+		} while (true);
+	}
 };
 
 int menu();
+int modifyMenu();
+
 void addBook(std::vector<book>* storage);
-void browseStorage(std::vector<book> storage);
+void modifyID(std::vector<book>* storage);
 void deleteBook(std::vector<book>* storage);
-void modifyBook(std::vector<book>* storage);
+void browseStorage(std::vector<book> storage);
 bool isStorageEmpty(std::vector<book> storage);
 
 int main()
@@ -141,6 +242,7 @@ int main()
 			std::cout << "**************************\n";
 
 			std::cout << "\nSee you soon!";
+			std::cout << "\ngithub.com/KindaMe";
 
 			system("pause>0");
 			system("cls");
@@ -151,11 +253,11 @@ int main()
 			break;
 		case 2:
 			system("cls");
-			std::cout << "MODIFY EXISTING BOOK\n";
-			std::cout << "*********************\n";
+			std::cout << "BROWSE STORAGE\n";
+			std::cout << "***************\n";
 			if (!(isStorageEmpty(storage)))
 			{
-				modifyBook(&storage);
+				modifyID(&storage);
 			}
 			break;
 		case 3:
@@ -415,11 +517,28 @@ label1: {}
 	}
 }
 
-void modifyBook(std::vector<book>* storage)
+int modifyMenu()
 {
-	std::cin.clear();
-	std::cin.ignore();
-	std::cin.get();
+	int mode;
+	system("cls");
+	std::cout << "MODIFY EXISTING BOOK\n";
+	std::cout << "*********************\n";
+
+	std::cout << "UPDATE: \n\n";
+	std::cout << "1 - TITLE\n";
+	std::cout << "2 - AUTHOR\n";
+	std::cout << "3 - AMOUNT\n";
+	std::cout << "4 - PRICE\n\n";
+	std::cout << "0 - BACK\n\n";
+
+	while (!(std::cin >> mode) || (mode < 0 || mode > 4))
+	{
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return -1;
+	}
+
+	return mode;
 }
 
 bool isStorageEmpty(std::vector<book> storage)
@@ -436,4 +555,83 @@ bool isStorageEmpty(std::vector<book> storage)
 		std::cin.ignore();
 		return true;
 	}
+}
+
+void modifyID(std::vector<book>* storage)
+{
+	int id;
+
+	do
+	{
+		do
+		{
+			system("cls");
+			std::cout << "MODIFY EXISTING BOOK\n";
+			std::cout << "*********************\n";
+
+			std::cout << "Enter [ID] you want to modify: ";
+
+			if (!(std::cin >> id))
+			{
+				system("cls");
+				std::cout << "MODIFY EXISTING BOOK\n";
+				std::cout << "*********************\n";
+
+				std::cout << "Invalid input.\n\nPress ENTER to try again...";
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cin.get();
+			}
+			else
+			{
+				break;
+			}
+		} while (true);
+
+		for (int i = 0; i < (*storage).size(); i++)
+		{
+			if ((*storage)[i].getID() == id)
+			{
+				id = i;
+				goto label1;
+			}
+		}
+		system("cls");
+		std::cout << "MODIFY EXISTING BOOK\n";
+		std::cout << "*********************\n";
+
+		std::cout << "Invalid ID.\n\nPress ENTER to try again...";
+		std::cin.clear();
+		std::cin.ignore();
+		std::cin.get();
+	} while (true);
+label1: {}
+	do
+	{
+		switch (modifyMenu())
+		{
+		case 0:
+			goto label2;
+		case 1:
+			(*storage)[id].changeTitle();
+			goto label2;
+		case 2:
+			(*storage)[id].changeAuthor();
+			goto label2;
+		case 3:
+			(*storage)[id].changeAmount();
+			goto label2;
+		case 4:
+			(*storage)[id].changePrice();
+			goto label2;
+		default:
+			system("cls");
+			std::cout << "MODIFY EXISTING BOOK\n";
+			std::cout << "*********************\n";
+			std::cout << "Invalid input.\n\nPress ENTER to try again...";
+			std::cin.get();
+			break;
+		}
+	} while (true);
+label2: {}
 }
