@@ -25,6 +25,7 @@ public:
 		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << Amount;
 		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << Price;
 		std::cout << "\n";
+		std::cout << std::string(110, '-');
 	}
 	void initBook(std::vector<book>* storage)
 	{
@@ -119,18 +120,11 @@ public:
 		std::cout << "MODIFY TITLE\n";
 		std::cout << "*************\n";
 
+		std::cout << "Current title: " << Title << "\n\n";
+
 		std::cin.ignore(1000, '\n');
 		std::cout << "Enter new title: ";
 		getline(std::cin, Title);
-
-		system("cls");
-		std::cout << "MODIFY TITLE\n";
-		std::cout << "*************\n";
-
-		std::cout << "New title: " << Title;
-
-		std::cout << "\n\nPress ENTER to continue...";
-		std::cin.get();
 	}
 	void changeAuthor()
 	{
@@ -138,18 +132,11 @@ public:
 		std::cout << "MODIFY AUTHOR\n";
 		std::cout << "**************\n";
 
+		std::cout << "Current author: " << Author << "\n\n";
+
 		std::cin.ignore(1000, '\n');
 		std::cout << "Enter new author: ";
 		getline(std::cin, Author);
-
-		system("cls");
-		std::cout << "MODIFY AUTHOR\n";
-		std::cout << "**************\n";
-
-		std::cout << "New author: " << Author;
-
-		std::cout << "\n\nPress ENTER to continue...";
-		std::cin.get();
 	}
 	void changeAmount()
 	{
@@ -161,7 +148,7 @@ public:
 			std::cout << "MODIFY AMOUNT\n";
 			std::cout << "**************\n";
 
-			std::cout << "Current amount: " << Amount << "\n";
+			std::cout << "Current amount: " << Amount << "\n\n";
 			std::cout << "Enter amount to add (+/-): ";
 
 			if (!(std::cin >> value))
@@ -190,17 +177,6 @@ public:
 			std::cin.ignore(1000, '\n');
 			std::cin.get();
 		} while (true);
-
-		system("cls");
-		std::cout << "MODIFY AMOUNT\n";
-		std::cout << "**************\n";
-
-		std::cout << "New amount: " << Amount;
-
-		std::cout << "\n\nPress ENTER to continue...";
-		std::cin.clear();
-		std::cin.ignore();
-		std::cin.get();
 	}
 	void changePrice()
 	{
@@ -211,7 +187,7 @@ public:
 			std::cout << "MODIFY PRICE\n";
 			std::cout << "*************\n";
 
-			std::cout << "Current price: " << Price << "\n";
+			std::cout << "Current price: " << Price << "\n\n";
 			std::cout << "Enter new price: ";
 			if (!(std::cin >> value))
 			{
@@ -239,22 +215,11 @@ public:
 			std::cin.ignore(1000, '\n');
 			std::cin.get();
 		} while (true);
-
-		system("cls");
-		std::cout << "MODIFY PRICE\n";
-		std::cout << "*************\n";
-
-		std::cout << "New price: " << Price;
-
-		std::cout << "\n\nPress ENTER to continue...";
-		std::cin.clear();
-		std::cin.ignore();
-		std::cin.get();
 	}
 };
 
 int menu();
-int modifyMenu();
+int modifyMenu(book modifiedBook);
 
 void addBook(std::vector<book>* storage);
 void modifyID(std::vector<book>* storage);
@@ -426,6 +391,7 @@ void addBook(std::vector<book>* storage)
 		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
 		std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
 		std::cout << "\n";
+		std::cout << std::string(110, '-');
 
 		tempBook.printBookDebug();
 
@@ -481,6 +447,7 @@ void browseStorage(std::vector<book> storage)
 	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
 	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
 	std::cout << "\n";
+	std::cout << std::string(110, '-');
 
 	for (int i = 0; i < storage.size(); i++)
 	{
@@ -541,6 +508,7 @@ void deleteBook(std::vector<book>* storage)
 				std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
 				std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
 				std::cout << "\n";
+				std::cout << std::string(110, '-');
 
 				(*storage)[i].printBookDebug();
 
@@ -609,15 +577,24 @@ label1: {}
 	}
 }
 
-int modifyMenu()
+int modifyMenu(book modifiedBook)
 {
 	int mode;
 	system("cls");
 	std::cout << "MODIFY EXISTING BOOK\n";
 	std::cout << "*********************\n";
 
-	std::cout << "UPDATE: \n\n";
-	std::cout << "1 - TITLE\n";
+	std::cout << "\n";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "ID";
+	std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "TITLE";
+	std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << "AUTHOR";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "AMOUNT";
+	std::cout << std::left << std::setw(numWidth) << std::setfill(separator) << "PRICE";
+	std::cout << "\n";
+	std::cout << std::string(110, '-');
+	modifiedBook.printBookDebug();
+
+	std::cout << "\n\n1 - TITLE\n";
 	std::cout << "2 - AUTHOR\n";
 	std::cout << "3 - AMOUNT\n";
 	std::cout << "4 - PRICE\n\n";
@@ -700,22 +677,22 @@ void modifyID(std::vector<book>* storage)
 label1: {}
 	do
 	{
-		switch (modifyMenu())
+		switch (modifyMenu((*storage)[id]))
 		{
 		case 0:
 			goto label2;
 		case 1:
 			(*storage)[id].changeTitle();
-			goto label2;
+			break;
 		case 2:
 			(*storage)[id].changeAuthor();
-			goto label2;
+			break;
 		case 3:
 			(*storage)[id].changeAmount();
-			goto label2;
+			break;
 		case 4:
 			(*storage)[id].changePrice();
-			goto label2;
+			break;
 		default:
 			system("cls");
 			std::cout << "MODIFY EXISTING BOOK\n";
